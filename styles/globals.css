@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer components {
+    .MyMessage{
+        @apply p-5 ml-auto text-white font-semibold bg-[#5B2DC3] rounded-t-2xl w-96 rounded-l-2xl
+    }
+    .FriendMessage{
+        @apply p-5 bg-gray-200 font-semibold rounded-b-2xl w-96 rounded-r-2xl
+    }
+}
