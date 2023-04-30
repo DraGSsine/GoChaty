@@ -16,6 +16,7 @@ function Messages() {
 
   return (
     <section className=" px-5 lg:h-[87vh] bg-[#1A1A1A] lg:flex-row flex flex-col items-center lg:flex gap-2">
+    <h1>hello</h1>
       <FriendsList />
       <MessagesForm />
     </section>
