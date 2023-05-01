@@ -7,6 +7,7 @@ function FriendsList() {
   const [Friends, setFriends] = useState([]);
   const getAllDataFromFireBase = async () => {
     try {
+
       const userDocRef = doc(db, "users", auth.currentUser.uid);
       const friendsCollRef = collection(userDocRef, "Friends");
       onSnapshot(friendsCollRef, (snapshot) => {
@@ -25,7 +26,7 @@ function FriendsList() {
   }, []);
   return (
     <div className="bg-[#282828] h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl">
-      <h1 className=" hidden lg:inline-flex text-white font-semibold p-4 text-4xl">
+      <h1 className=" p-5 hidden lg:inline-flex text-white font-semibold py-4 text-4xl">
         Friends
       </h1>
       <div className=" flex lg:flex-col space-y-3">

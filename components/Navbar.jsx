@@ -25,7 +25,7 @@ function Navbar() {
     setIsloading(false);
   }
   return (
-    <nav className=" bg-[#1A1A1A] flex-col gap-5 md:flex-row justify-center flex md:justify-between h-[13vh] px-5 items-center">
+    <nav className=" bg-[#1A1A1A] gap-5 flex-row justify-center flex md:justify-between h-[13vh] px-5 items-center">
       <div className="w-[33%] hidden md:inline-flex">
         <Image alt="logo" src={Logo} width={100} height={100} />
       </div>
@@ -51,8 +51,8 @@ function Navbar() {
           </Link>
         </li>
       </ul>
-      <div className=" w-full md:w-[33%] relative flex justify-center md:justify-end">
-        <div className=" flex items-center px-3 border-2 w-4/6  rounded-xl overflow-hidden border-[#5b2dc3]">
+      <div  onMouseLeave={()=>setTimeout(() => {setSearchInput('')}, 300)}    className="md:w-[33%] relative flex justify-center md:justify-end">
+        <div className=" w-full flex items-center px-3 border-2 md:w-4/6  rounded-xl overflow-hidden border-[#5b2dc3]">
           <i className=" inline-block w-7 text-[#5b2dc3]">
             <Search />
           </i>
@@ -64,7 +64,7 @@ function Navbar() {
           />
         </div>
         {searchInput && (
-          <div className="absolute top-12 space-y-4 p-2 rounded-xl bg-white w-4/6">
+          <div className=" min-[40vh]: absolute top-11 space-y-4 p-2 rounded-xl bg-white w-4/6">
             {
               users.length ? users.map((user,index) =>
               IsLoading ? (

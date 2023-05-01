@@ -3,9 +3,9 @@ import React, { useState } from "react";
 import { auth, db } from "@/Firebase/firebase";
 import {
   arrayUnion,
+  collection,
   doc,
   getDoc,
-  serverTimestamp,
   setDoc,
   updateDoc,
 } from "firebase/firestore";
@@ -15,7 +15,23 @@ function MessageInput() {
   const { data } = useContext(SelectedChatContext);
   const [newMessge, setNewMessage] = useState("");
 
+  const handleAddFriends = async () => {
+    console.log(data)
+    const userDocRef = doc(db, "users", data?.uuid)
+    const subCollectionRef = collection(userDocRef, "Friends")
+    const friendDocRef = doc(subCollectionRef, auth.currentUser.uid);
+
+    const friendDoc = await getDoc(friendDocRef)
+    if (friendDoc.exists()) {
+      return
+    } else {
+      await setDoc(friendDocRef, { uuid:auth.currentUser.uid, userName:auth.currentUser.displayName, photoUrl:'' });
+    }
+
+  }
   const HandleSendMessages = async (e) => {
+    handleAddFriends()
+    const Time = new Date();
     const combaindId =
       auth.currentUser.uid > data.uuid
         ? auth.currentUser.uid + data.uuid
@@ -26,7 +42,7 @@ function MessageInput() {
     const messageDetails = {
       messageDetails: {
         Text: newMessge,
-        createdAt: "4:35",
+        createdAt: Time,
         user: auth.currentUser.uid,
       },
     };
@@ -41,18 +57,21 @@ function MessageInput() {
     } else {
       await setDoc(docRef, { message: arrayUnion(messageDetails) });
     }
-  };
+  }
+
+
 
   return (
-    <form onSubmit={HandleSendMessages} className=" w-full flex h-14">
+    <form onSubmit={HandleSendMessages} className=" relative rounded-2xl  w-full flex h-14">
       <input
         value={newMessge}
         placeholder="Write Somthing....."
         onChange={(e) => setNewMessage(e.target.value)}
-        className=" outline-none flex-grow"
+        className=" bg-[#1A1A1A] rounded-full pl-5 outline-none flex-grow"
         type="text"
+
       />
-      <button className=" w-14 flex justify-center items-center  bg-[#5b2dc3] text-white">
+      <button className=" absolute right-0 h-14 rounded-full w-14 flex justify-center items-center  bg-[#5b2dc3] text-white">
         <Send />
       </button>
     </form>

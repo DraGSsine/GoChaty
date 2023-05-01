@@ -9,9 +9,11 @@ import {
 } from "firebase/auth";
 import { setDoc,doc } from "firebase/firestore";
 import { db } from "@/Firebase/firebase";
-
+import { useContext } from "react";
+import { SelectedChatContext } from "@/context/SelectedChatContext";
 function Register() {
   const router = useRouter();
+  const {setdata} = useContext(SelectedChatContext)
   const [IsPassordMatch, setIsPasswordMatch] = useState(true);
   const [ErrorMessage, setErrorMessage] = useState(null);
 
@@ -22,6 +24,7 @@ function Register() {
   });
   const HandleSingUp = (e) => {
     e.preventDefault();
+    setdata({})
     const fullName = e.target[0].value;
     const userName = e.target[1].value;
     const email = e.target[2].value;
