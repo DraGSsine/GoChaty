@@ -16,7 +16,6 @@ function MessageInput() {
   const [newMessge, setNewMessage] = useState("");
 
   const handleAddFriends = async () => {
-    console.log(data)
     const userDocRef = doc(db, "users", data?.uuid)
     const subCollectionRef = collection(userDocRef, "Friends")
     const friendDocRef = doc(subCollectionRef, auth.currentUser.uid);

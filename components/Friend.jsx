@@ -7,12 +7,12 @@ import { auth, db } from "@/Firebase/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { UseDate } from "@/Hooks/UseDate";
 function Friend({ userName, photoUrl, uuid }) {
-  const {data, setdata } = useContext(SelectedChatContext);
+  const { data, setdata } = useContext(SelectedChatContext);
   const [lastMessage, setlastMessage] = useState(null);
   const [Seen, setSeen] = useState(false);
 
   const handleSelectedChat = () => {
-    setSeen(true)
+    setSeen(true);
     setdata({ uuid, userName, photoUrl });
   };
   const GetTheLastMessage = async () => {
@@ -24,14 +24,18 @@ function Friend({ userName, photoUrl, uuid }) {
     const docRef = doc(db, "chats", combaindId);
     onSnapshot(docRef, (doc) => {
       setlastMessage(doc.data()?.message);
-      if(doc.data()?.message[doc.data()?.message.length - 1].messageDetails.user==data.uuid || doc.data()?.message==undefined || uuid == data.uuid ){
-        console.log(true)
-        setSeen(true)
-      }
-      else{
-        // console.log(false)
-        setSeen(false)
-
+      if (
+        doc.data()?.message[doc.data()?.message.length - 1].messageDetails
+          .user == auth.currentUser.uid
+      ) {
+        setSeen(true);
+      } else {
+        if (uuid == data.uuid) {
+          setSeen(true);
+        } else {
+          setSeen(false);
+          console.log("not seen");
+        }
       }
     });
   };
@@ -39,10 +43,11 @@ function Friend({ userName, photoUrl, uuid }) {
     GetTheLastMessage();
   }, []);
   return (
-    
     <div
       onClick={handleSelectedChat}
-      className={`${ !Seen ?' bg-[#5b2dc3]': ' bg-[#282828]'} flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
+      className={`${
+        !Seen ? " bg-[#5b2dc3]" : " bg-[#282828]"
+      } flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
     >
       <div>
         <Image
@@ -55,22 +60,29 @@ function Friend({ userName, photoUrl, uuid }) {
       </div>
       <div className="pl-5 w-full hidden lg:inline-block ">
         <div className="flex justify-between">
-          <span className={`${!Seen ?' text-[#000000]': 'text-[#5b2dc3]'} font-semibold text-xl text-[#5b2dc3]`}>
+          <span
+            className={`${
+              !Seen ? " text-[#000000]" : "text-[#5b2dc3]"
+            } font-semibold text-xl text-[#5b2dc3]`}
+          >
             {userName}
           </span>
           <span className="text-white">
-            {
-              lastMessage &&
-                UseDate(
-                  lastMessage[lastMessage.length - 1]?.messageDetails.createdAt
-                )
-            }
+            {lastMessage &&
+              UseDate(
+                lastMessage[lastMessage.length - 1]?.messageDetails.createdAt
+              )}
           </span>
         </div>
         <div>
           <p className=" text-gray-300">
             {lastMessage &&
-              (lastMessage[lastMessage.length - 1]?.messageDetails.user == auth.currentUser.uid? `You: ${lastMessage[lastMessage.length - 1]?.messageDetails.Text}` : lastMessage[lastMessage.length - 1]?.messageDetails.Text)}
+              (lastMessage[lastMessage.length - 1]?.messageDetails.user ==
+              auth.currentUser.uid
+                ? `You: ${
+                    lastMessage[lastMessage.length - 1]?.messageDetails.Text
+                  }`
+                : lastMessage[lastMessage.length - 1]?.messageDetails.Text)}
           </p>
         </div>
       </div>

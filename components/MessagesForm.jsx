@@ -14,7 +14,7 @@ function MessagesForm() {
   const [Chats, setChats] = useState([]);
 
   const getAllDataFromFireBase = async () => {
-    setChats([])
+    setChats([]);
     const combaindId =
       auth?.currentUser.uid > data.uuid
         ? auth.currentUser.uid + data.uuid
@@ -29,9 +29,7 @@ function MessagesForm() {
         setChats([]);
       }
     });
-
-  }
-  console.log('==>',Chats)
+  };
   useEffect(() => {
     getAllDataFromFireBase();
   }, [data]);
