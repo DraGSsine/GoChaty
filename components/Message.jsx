@@ -1,11 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { auth } from "@/Firebase/firebase";
-function Message({user,message}) {
+import { useContext } from "react";
+import { SelectedChatContext } from "@/context/SelectedChatContext";
+function Message({user,message,createdAt}) {
 
+  const { setlastMessage } = useContext(SelectedChatContext);
   const [IsMyMessage, setIsMyMessage] = useState(false)
   useEffect(() => {
     auth.currentUser.uid == user ? setIsMyMessage(true) : setIsMyMessage(false)
+    setlastMessage({
+      user,
+      message,
+      createdAt
+    })
   }, [])
   
   return (

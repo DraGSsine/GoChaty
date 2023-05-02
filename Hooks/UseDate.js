@@ -1,4 +1,5 @@
 export function UseDate(TheDate) {
+  console.log()
   const timestamp =TheDate;
   const date = new Date(
     timestamp.seconds * 1000 + timestamp.nanoseconds / 1000000

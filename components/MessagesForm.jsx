@@ -10,7 +10,7 @@ import { auth } from "@/Firebase/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/Firebase/firebase";
 function MessagesForm() {
-  const { data, setlastMessage } = useContext(SelectedChatContext);
+  const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
 
   const getAllDataFromFireBase = async () => {
@@ -24,7 +24,6 @@ function MessagesForm() {
     onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
         setChats(doc.data());
-        setlastMessage(doc.data());
       } else {
         setChats([]);
       }
@@ -68,6 +67,7 @@ function MessagesForm() {
                 key={index}
                 message={chat.messageDetails.Text}
                 user={chat.messageDetails.user}
+                createdAt={chat.messageDetails.createdAt}
               />
             ))}
           </div>

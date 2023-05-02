@@ -66,7 +66,7 @@ function MessageInput() {
         value={newMessge}
         placeholder="Write Somthing....."
         onChange={(e) => setNewMessage(e.target.value)}
-        className=" bg-[#1A1A1A] rounded-full pl-5 outline-none flex-grow"
+        className=" bg-[#1A1A1A] text-white font-semibold rounded-full pl-5 outline-none flex-grow"
         type="text"
 
       />
