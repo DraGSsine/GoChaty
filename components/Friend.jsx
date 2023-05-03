@@ -17,7 +17,7 @@ function Friend({ userName, photoUrl, uuid }) {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [data]);
 
   const getTheLastMessage = () => {
     const combinedId =
@@ -26,7 +26,7 @@ function Friend({ userName, photoUrl, uuid }) {
     const docRef = doc(db, "chats", combinedId);
     return onSnapshot(docRef, (doc) => {
       setlastMessage(doc.data()?.message[doc.data()?.message.length-1].messageDetails);
-      if(doc.data()?.message[doc.data()?.message.length-1].messageDetails.user == auth.currentUser.uid ||doc.data()?.message[doc.data()?.message.length-1].messageDetails.user==uuid){
+      if(uuid == data.uuid || doc.data() == undefined){
         setSeen(true)
       }else{
         setSeen(false)
@@ -41,7 +41,7 @@ function Friend({ userName, photoUrl, uuid }) {
   return (
     <div
       onClick={handleSelectedChat}
-      className={`${!seen && uuid != data.uuid ? " bg-[#5b2dc3]" : " bg-[#282828]"} flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
+      className={`${lastMessage?.seen || seen ?" bg-[#282828]" : "bg-[#5b2dc3]" } flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
     >
       <div>
         <Image
@@ -56,7 +56,7 @@ function Friend({ userName, photoUrl, uuid }) {
         <div className="flex justify-between">
           <span
             className={`${
-              !seen ? " text-[#000000]" : "text-[#5b2dc3]"
+              lastMessage?.seen || seen ?   "text-[#5b2dc3]":" text-[#000000]"
             } font-semibold text-xl`}
           >
             {userName}

@@ -12,26 +12,28 @@ import { db } from "@/Firebase/firebase";
 function MessagesForm() {
   const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
+  const combaindId =
+  auth?.currentUser.uid > data.uuid
+    ? auth.currentUser.uid + data.uuid
+    : data.uuid + auth.currentUser.uid;
 
-  const getAllDataFromFireBase = async () => {
-    setChats([]);
-    const combaindId =
-      auth?.currentUser.uid > data.uuid
-        ? auth.currentUser.uid + data.uuid
-        : data.uuid + auth.currentUser.uid;
-
-    const docRef = doc(db, "chats", combaindId);
-    onSnapshot(docRef, (doc) => {
+  const getAllDataFromFireBase = () => {
+      const docRef = doc(db, "chats", combaindId);
+    const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
         setChats(doc.data());
       } else {
         setChats([]);
       }
     });
+    return unsubscribe; // return a function to clean up the listener
   };
+  
   useEffect(() => {
-    getAllDataFromFireBase();
+    const unsubscribe = getAllDataFromFireBase();
+    return () => unsubscribe(); // clean up the listener when the component unmounts
   }, [data]);
+  
   return (
     <>
       {data.uuid ? (
@@ -68,6 +70,7 @@ function MessagesForm() {
                 message={chat.messageDetails.Text}
                 user={chat.messageDetails.user}
                 createdAt={chat.messageDetails.createdAt}
+                combaindId={combaindId}
               />
             ))}
           </div>
