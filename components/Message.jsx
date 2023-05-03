@@ -31,8 +31,7 @@ function Message({ user, message, createdAt, combaindId }) {
       createdAt,
     });
   }, [user]);
-  return (
-    <>
+  return ( <>
       <div className="flex m-2 ">
         <div className={IsMyMessage ? "MyMessage" : "FriendMessage"}>
           <p>{message}</p>
