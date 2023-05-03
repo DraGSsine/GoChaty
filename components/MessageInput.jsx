@@ -43,6 +43,7 @@ function MessageInput() {
         Text: newMessge,
         createdAt: Time,
         user: auth.currentUser.uid,
+        seen:false
       },
     };
     const docRef = doc(db, "chats", combaindId);
