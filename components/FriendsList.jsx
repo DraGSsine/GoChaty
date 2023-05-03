@@ -24,6 +24,8 @@ function FriendsList() {
   useEffect(() => {
     getAllDataFromFireBase();
   }, [])
+  console.log(Friends)
+
   return (
     <div className="bg-[#282828] h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl">
       <h1 className=" p-5 hidden lg:inline-flex text-white font-semibold py-4 text-4xl">

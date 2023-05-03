@@ -12,14 +12,12 @@ import { db } from "@/Firebase/firebase";
 function MessagesForm() {
   const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
-
+  const combaindId =
+    auth?.currentUser?.uid > data.uuid
+      ? auth.currentUser?.uid + data.uuid
+      : data.uuid + auth.currentUser?.uid;
   const getAllDataFromFireBase = async () => {
     setChats([]);
-    const combaindId =
-      auth?.currentUser.uid > data.uuid
-        ? auth.currentUser.uid + data.uuid
-        : data.uuid + auth.currentUser.uid;
-
     const docRef = doc(db, "chats", combaindId);
     onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
@@ -64,6 +62,7 @@ function MessagesForm() {
           <div className=" h-full overflow-y-scroll">
             {Chats?.message?.map((chat, index) => (
               <Message
+              combaindId={combaindId}
                 key={index}
                 message={chat.messageDetails.Text}
                 user={chat.messageDetails.user}

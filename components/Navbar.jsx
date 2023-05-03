@@ -24,6 +24,7 @@ function Navbar() {
     );
     setIsloading(false);
   }
+  console.log('>>>>>>',users)
   return (
     <nav className=" bg-[#1A1A1A] gap-5 flex-row justify-center flex md:justify-between h-[13vh] px-5 items-center">
       <div className="w-[33%] hidden md:inline-flex">

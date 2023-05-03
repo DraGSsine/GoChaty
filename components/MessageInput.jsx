@@ -50,11 +50,11 @@ function MessageInput() {
     if (docSnap.exists()) {
       await updateDoc(
         docRef,
-        { message: arrayUnion(messageDetails) },
+        { message: arrayUnion(messageDetails),seen:false},
         { merge: true }
       );
     } else {
-      await setDoc(docRef, { message: arrayUnion(messageDetails) });
+      await setDoc(docRef, { message: arrayUnion(messageDetails),seen:false  });
     }
   }
 
