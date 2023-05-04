@@ -29,7 +29,6 @@ export default function Home() {
 
   return (
     <div className=" text-lg font-semibold space-x-4 p-10 bg-[#1A1A1A]">
-    
       <Link href="/singin">singin</Link>
       <Link href="/register">register</Link>
       <button onClick={HndleSignOut}>Sign out</button>

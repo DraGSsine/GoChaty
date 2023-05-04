@@ -12,6 +12,7 @@ import { db } from "@/Firebase/firebase";
 function MessagesForm() {
   const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
+  console.log(data)
   const combaindId =
   auth?.currentUser.uid > data.uuid
     ? auth.currentUser.uid + data.uuid
@@ -40,13 +41,14 @@ function MessagesForm() {
         <div className="bg-[#282828] mx-5 w-11/12 h-[92vh] lg:h-[87vh] lg:w-8/12 rounded-t-3xl flex flex-col">
           <div className="flex py-3 px-4 items-center cursor-pointer border-b-2 border-[#dbdadc]">
             <div>
-              <Image
-                className="rounded-full"
-                src={FriendProfile}
-                width={80}
-                height={60}
-                alt="profile"
-              />
+            <Image
+            className="rounded-full h-14 w-14"
+            src={data.photoUrl}
+            alt="userProfile"
+            width={100}
+            height={100}
+            objectFit="fill"
+          />
             </div>
             <div className="pl-5 w-full flex justify-between">
               <div className="flex flex-col justify-center ">
