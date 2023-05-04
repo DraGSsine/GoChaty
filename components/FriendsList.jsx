@@ -28,7 +28,7 @@ function FriendsList() {
       <h1 className=" p-5 hidden lg:inline-flex text-white font-semibold py-4 text-4xl">
         Friends
       </h1>
-      <div className=" flex lg:flex-col space-y-3">
+      <div className=" flex lg:flex-col space-y-3 items-center h-full lg:h-auto lg:items-stretch">
         {Friends.map((friend, index) => (
           <Friend
             key={friend.uuid + index}

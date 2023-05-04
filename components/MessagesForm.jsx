@@ -12,14 +12,14 @@ import { db } from "@/Firebase/firebase";
 function MessagesForm() {
   const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
-  console.log(data)
+  console.log(data);
   const combaindId =
-  auth?.currentUser.uid > data.uuid
-    ? auth.currentUser.uid + data.uuid
-    : data.uuid + auth.currentUser.uid;
+    auth?.currentUser?.uid > data.uuid
+      ? auth?.currentUser?.uid + data.uuid
+      : data.uuid + auth?.currentUser?.uid;
 
   const getAllDataFromFireBase = () => {
-      const docRef = doc(db, "chats", combaindId);
+    const docRef = doc(db, "chats", combaindId);
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
         setChats(doc.data());
@@ -29,26 +29,26 @@ function MessagesForm() {
     });
     return unsubscribe; // return a function to clean up the listener
   };
-  
+
   useEffect(() => {
     const unsubscribe = getAllDataFromFireBase();
     return () => unsubscribe(); // clean up the listener when the component unmounts
   }, [data]);
-  
+
   return (
     <>
       {data.uuid ? (
         <div className="bg-[#282828] mx-5 w-11/12 h-[92vh] lg:h-[87vh] lg:w-8/12 rounded-t-3xl flex flex-col">
           <div className="flex py-3 px-4 items-center cursor-pointer border-b-2 border-[#dbdadc]">
             <div>
-            <Image
-            className="rounded-full h-14 w-14"
-            src={data.photoUrl}
-            alt="userProfile"
-            width={100}
-            height={100}
-            objectFit="fill"
-          />
+              <Image
+                className="rounded-full h-14 w-16"
+                src={data.photoUrl}
+                alt="userProfile"
+                width={100}
+                height={100}
+                objectFit="fill"
+              />
             </div>
             <div className="pl-5 w-full flex justify-between">
               <div className="flex flex-col justify-center ">

@@ -47,11 +47,11 @@ function Friend({ userName, photoUrl, uuid }) {
       onClick={handleSelectedChat}
       className={`${
         lastMessage?.seen || seen ? " bg-[#282828]" : "bg-[#5b2dc3]"
-      } flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
+      } rounded-full lg:rounded-none p-2 flex lg:p-3 items-center transition duration-300 cursor-pointer hover:bg-[#2d2d2d]`}
     >
       <div>
         <Image
-          className="rounded-full h-14 w-16"
+          className="rounded-full h-10 w-10 lg:h-14 lg:w-16"
           src={photoUrl}
           alt="userProfile"
           width={100}
