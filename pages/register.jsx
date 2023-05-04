@@ -7,13 +7,16 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { setDoc,doc } from "firebase/firestore";
-import { db } from "@/Firebase/firebase";
+import { setDoc, doc } from "firebase/firestore";
+import { db, storage } from "@/Firebase/firebase";
 import { useContext } from "react";
 import { SelectedChatContext } from "@/context/SelectedChatContext";
+import { UploadProfileIcon } from "@/public/Icons";
+import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
+import DefaultProfile from '../public/77478b89aee3a9c48af9835a1b0e1db4.png'
 function Register() {
   const router = useRouter();
-  const {setdata} = useContext(SelectedChatContext)
+  const { setdata } = useContext(SelectedChatContext);
   const [IsPassordMatch, setIsPasswordMatch] = useState(true);
   const [ErrorMessage, setErrorMessage] = useState(null);
 
@@ -22,35 +25,48 @@ function Register() {
       router.push("/");
     }
   });
-  const HandleSingUp = (e) => {
-    e.preventDefault();
-    setdata({})
-    const fullName = e.target[0].value;
-    const userName = e.target[1].value;
-    const email = e.target[2].value;
-    const password = e.target[3].value;
-    const confirmPassword = e.target[4].value;
+  const HandleSingUp = async (e) => {
+    e.preventDefault()
+    setdata({});
+    const ProfileURL = e.target[0].files[0]
+    const fullName = e.target[1].value;
+    const userName = e.target[2].value;
+    const email = e.target[3].value;
+    const password = e.target[4].value;
+    const confirmPassword = e.target[5].value;
 
     if (password !== confirmPassword) {
       setIsPasswordMatch(false);
       e.target[3].value = "";
       e.target[4].value = "";
     } else {
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(async () => {
-          await setDoc(doc(db, "users", auth.currentUser.uid),{
-            userName: userName,
-            uuid: auth.currentUser.uid,
-            photoUrl: "Turing",
-            });
+      try {
+        const currentUser = await createUserWithEmailAndPassword(auth, email, password);
 
-          updateProfile(auth.currentUser, { displayName: userName });
-          router.push("/");
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          setErrorMessage(errorCode);
+        const storageRef = ref(storage, currentUser.user.uid)
+
+        await uploadBytesResumable(storageRef, ProfileURL).then(()=>{
+          getDownloadURL(storageRef).then(async (downloadURL) => {
+            try {
+              await updateProfile(currentUser.user, {
+                displayName: userName,
+                photoURL: downloadURL,
+              });
+              await setDoc(doc(db, "users",currentUser.user.uid), {
+                userName: userName,
+                uuid: currentUser.user.uid,
+                photoUrl: downloadURL,
+              });
+            } catch (error) {
+              const errorCode = error.code;
+              setErrorMessage(errorCode);
+            }
+          })
         });
+      } catch (error) {
+        const errorCode = error.code;
+        setErrorMessage(errorCode);
+      }
     }
   };
   return (
@@ -58,41 +74,41 @@ function Register() {
       {ErrorMessage && (
         <div
           id="alert-border-2"
-          class="flex absolute z-30 p-6 mb-4 w-full text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
+          className="flex absolute z-30 p-6 mb-4 w-full text-red-800 border-t-4 border-red-300 bg-red-50 dark:text-red-400 dark:bg-gray-800 dark:border-red-800"
           role="alert"
         >
           <svg
-            class="flex-shrink-0 w-5 h-5"
+            className="flex-shrink-0 w-5 h-5"
             fill="currentColor"
             viewBox="0 0 20 20"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             ></path>
           </svg>
-          <div class="ml-3 text-sm font-medium">{ErrorMessage}</div>
+          <div className="ml-3 text-sm font-medium">{ErrorMessage}</div>
           <button
             onClick={() => setErrorMessage(null)}
             type="button"
-            class="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
+            className="ml-auto -mx-1.5 -my-1.5 bg-red-50 text-red-500 rounded-lg focus:ring-2 focus:ring-red-400 p-1.5 hover:bg-red-200 inline-flex h-8 w-8 dark:bg-gray-800 dark:text-red-400 dark:hover:bg-gray-700"
             data-dismiss-target="#alert-border-2"
             aria-label="Close"
           >
-            <span class="sr-only">Dismiss</span>
+            <span className="sr-only">Dismiss</span>
             <svg
               aria-hidden="true"
-              class="w-5 h-5"
+              className="w-5 h-5"
               fill="currentColor"
               viewBox="0 0 20 20"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                fill-rule="evenodd"
+                fillRule="evenodd"
                 d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                clip-rule="evenodd"
+                clipRule="evenodd"
               ></path>
             </svg>
           </button>
@@ -128,6 +144,12 @@ function Register() {
             <p className="text-sm font-normal text-gray-600 mb-7">
               Create an Account{" "}
             </p>
+            <div className=" flex justify-center">
+              <input className=" hidden" type="file" id="ProfileImg" />
+              <label className=" cursor-pointer" htmlFor="ProfileImg">
+                <UploadProfileIcon />
+              </label>
+            </div>
             <div className="flex justify-between gap-5">
               <div className="flex items-center border-2 py-3 px-3 rounded-2xl mb-4 w-3/6">
                 <svg

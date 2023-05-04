@@ -13,7 +13,7 @@ function Friend({ userName, photoUrl, uuid }) {
   const [seen, setSeen] = useState(false);
 
   useEffect(() => {
-    const unsubscribe = getTheLastMessage()
+    const unsubscribe = getTheLastMessage();
     return () => {
       unsubscribe();
     };
@@ -21,15 +21,19 @@ function Friend({ userName, photoUrl, uuid }) {
 
   const getTheLastMessage = () => {
     const combinedId =
-      auth.currentUser.uid > uuid ? auth.currentUser.uid + uuid : uuid + auth.currentUser.uid;
+      auth.currentUser.uid > uuid
+        ? auth.currentUser.uid + uuid
+        : uuid + auth.currentUser.uid;
 
     const docRef = doc(db, "chats", combinedId);
     return onSnapshot(docRef, (doc) => {
-      setlastMessage(doc.data()?.message[doc.data()?.message.length-1].messageDetails);
-      if(uuid == data.uuid || doc.data() == undefined){
-        setSeen(true)
-      }else{
-        setSeen(false)
+      setlastMessage(
+        doc.data()?.message[doc.data()?.message.length - 1].messageDetails
+      );
+      if (uuid == data.uuid || doc.data() == undefined || doc.data()?.message[doc.data()?.message.length - 1].messageDetails.user == auth.currentUser.uid) {
+        setSeen(true);
+      } else {
+        setSeen(false);
       }
     });
   };
@@ -41,22 +45,25 @@ function Friend({ userName, photoUrl, uuid }) {
   return (
     <div
       onClick={handleSelectedChat}
-      className={`${lastMessage?.seen || seen ?" bg-[#282828]" : "bg-[#5b2dc3]" } flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
+      className={`${
+        lastMessage?.seen || seen ? " bg-[#282828]" : "bg-[#5b2dc3]"
+      } flex py-3 items-center transition duration-300 cursor-pointer p-5 hover:bg-[#2d2d2d]`}
     >
       <div>
         <Image
-          className="rounded-full"
-          src={FriendProfile}
-          width={55}
-          height={55}
-          alt="profile"
+          className="rounded-full h-14 w-16"
+          src={photoUrl}
+          alt="userProfile"
+          width={100}
+          height={100}
+          objectFit="cover"
         />
       </div>
       <div className="pl-5 w-full hidden lg:inline-block ">
         <div className="flex justify-between">
           <span
             className={`${
-              lastMessage?.seen || seen ?   "text-[#5b2dc3]":" text-[#000000]"
+              lastMessage?.seen || seen ? "text-[#5b2dc3]" : " text-[#000000]"
             } font-semibold text-xl`}
           >
             {userName}

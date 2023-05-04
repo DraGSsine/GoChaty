@@ -3,48 +3,47 @@ import Image from "next/image";
 import profile from "../public/77478b89aee3a9c48af9835a1b0e1db4.png";
 import { AddFriendIcon, MarkFriendIcon } from "@/public/Icons";
 import { auth, db } from "@/Firebase/firebase";
-import { doc, collection, addDoc, setDoc, getDoc } from "firebase/firestore";
+import { doc, collection, setDoc, getDoc } from "firebase/firestore";
 
 function AddFriend({ userName, uuid, photoUrl }) {
   const [FriendHasBeenAdd, setFriendHasBeenAdd] = useState(false);
   const handleAddFriends = async () => {
-    const userDocRef = doc(db, "users", auth.currentUser.uid)
-    const subCollectionRef = collection(userDocRef, "Friends")
+    const userDocRef = doc(db, "users", auth.currentUser.uid);
+    const subCollectionRef = collection(userDocRef, "Friends");
     const friendDocRef = doc(subCollectionRef, uuid);
 
-    const friendDoc = await getDoc(friendDocRef)
+    const friendDoc = await getDoc(friendDocRef);
     if (friendDoc.exists()) {
       console.log(`Document with UUID ${uuid} already exists`);
     } else {
-      setFriendHasBeenAdd(true)
+      setFriendHasBeenAdd(true);
       await setDoc(friendDocRef, { uuid, userName, photoUrl });
     }
-
-  }
+  };
   useEffect(() => {
-    const ChekIfIsAfriends=async()=>{
-      const userDocRef = doc(db, "users", auth.currentUser.uid)
-      const subCollectionRef = collection(userDocRef, "Friends")
+    const ChekIfIsAfriends = async () => {
+      const userDocRef = doc(db, "users", auth.currentUser.uid);
+      const subCollectionRef = collection(userDocRef, "Friends");
       const friendDocRef = doc(subCollectionRef, uuid);
-  
-      const friendDoc = await getDoc(friendDocRef)
+
+      const friendDoc = await getDoc(friendDocRef);
       if (friendDoc.exists()) {
         console.log(`Document with UUID ${uuid} already exists`);
-        setFriendHasBeenAdd(true)
+        setFriendHasBeenAdd(true);
       }
-    }
-    ChekIfIsAfriends()
-  }, [])
-  
+    };
+    ChekIfIsAfriends();
+  }, []);
   return (
     <div className=" relative rounded-xl flex items-center overflow-hidden">
       <div>
         <Image
-          className="rounded-full"
-          src={profile}
-          width={60}
-          height={60}
+          className="rounded-full h-14 w-14"
+          src={photoUrl}
           alt="userProfile"
+          width={100}
+          height={100}
+          objectFit="fill"
         />
       </div>
       <div className="px-2  flex-grow flex justify-between items-center">

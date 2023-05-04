@@ -77,7 +77,7 @@ function Navbar() {
                   key={user.uuid}
                   userName={user.userName}
                   uuid={user.uuid}
-                  photoUrl={''}
+                  photoUrl={user.photoUrl}
                   IsLoading={IsLoading}
                 />
               )
