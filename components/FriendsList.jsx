@@ -7,24 +7,21 @@ function FriendsList() {
   const [Friends, setFriends] = useState([]);
   const getAllDataFromFireBase = async () => {
     try {
-
+      
       const userDocRef = doc(db, "users", auth.currentUser.uid);
       const friendsCollRef = collection(userDocRef, "Friends");
       onSnapshot(friendsCollRef, (snapshot) => {
         const updatedFriends = [];
-        snapshot.forEach(item => updatedFriends.push(item.data()));
+        snapshot.forEach((item) => updatedFriends.push(item.data()));
         setFriends(updatedFriends);
-      })
-
-
+      });
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   useEffect(() => {
     getAllDataFromFireBase();
-  }, [])
-  console.log(Friends)
+  }, []);
 
   return (
     <div className="bg-[#282828] h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl">
@@ -34,7 +31,7 @@ function FriendsList() {
       <div className=" flex lg:flex-col space-y-3">
         {Friends.map((friend, index) => (
           <Friend
-            key={friend.uuid+index}
+            key={friend.uuid + index}
             userName={friend.userName}
             photoUrl={friend.photoUrl}
             uuid={friend.uuid}

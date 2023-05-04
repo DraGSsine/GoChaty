@@ -16,20 +16,23 @@ function MessageInput() {
   const [newMessge, setNewMessage] = useState("");
 
   const handleAddFriends = async () => {
-    const userDocRef = doc(db, "users", data?.uuid)
-    const subCollectionRef = collection(userDocRef, "Friends")
+    const userDocRef = doc(db, "users", data?.uuid);
+    const subCollectionRef = collection(userDocRef, "Friends");
     const friendDocRef = doc(subCollectionRef, auth.currentUser.uid);
 
-    const friendDoc = await getDoc(friendDocRef)
+    const friendDoc = await getDoc(friendDocRef);
     if (friendDoc.exists()) {
-      return
+      return;
     } else {
-      await setDoc(friendDocRef, { uuid:auth.currentUser.uid, userName:auth.currentUser.displayName, photoUrl:'' });
+      await setDoc(friendDocRef, {
+        uuid: auth.currentUser.uid,
+        userName: auth.currentUser.displayName,
+        photoUrl: "",
+      });
     }
-
-  }
+  };
   const HandleSendMessages = async (e) => {
-    handleAddFriends()
+    handleAddFriends();
     const Time = new Date();
     const combaindId =
       auth.currentUser.uid > data.uuid
@@ -43,7 +46,7 @@ function MessageInput() {
         Text: newMessge,
         createdAt: Time,
         user: auth.currentUser.uid,
-        seen:false
+        seen: false,
       },
     };
     const docRef = doc(db, "chats", combaindId);
@@ -51,25 +54,28 @@ function MessageInput() {
     if (docSnap.exists()) {
       await updateDoc(
         docRef,
-        { message: arrayUnion(messageDetails),seen:false},
+        { message: arrayUnion(messageDetails), seen: false },
         { merge: true }
       );
     } else {
-      await setDoc(docRef, { message: arrayUnion(messageDetails),seen:false  });
+      await setDoc(docRef, {
+        message: arrayUnion(messageDetails),
+        seen: false,
+      });
     }
-  }
-
-
+  };
 
   return (
-    <form onSubmit={HandleSendMessages} className=" relative rounded-2xl  w-full flex h-14">
+    <form
+      onSubmit={HandleSendMessages}
+      className=" relative rounded-2xl  w-full flex h-14"
+    >
       <input
         value={newMessge}
         placeholder="Write Somthing....."
         onChange={(e) => setNewMessage(e.target.value)}
         className=" bg-[#1A1A1A] text-white font-semibold rounded-full pl-5 outline-none flex-grow"
         type="text"
-
       />
       <button className=" absolute right-0 h-14 rounded-full w-14 flex justify-center items-center  bg-[#5b2dc3] text-white">
         <Send />
