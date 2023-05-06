@@ -32,7 +32,7 @@ function Register() {
     e.preventDefault();
     setdata({});
     const file = e.target[0].files[0];
-    const fullName = e.target[1].value;
+    // const fullName = e.target[1].value;
     const userName = e.target[2].value;
     const email = e.target[3].value;
     const password = e.target[4].value;
@@ -48,11 +48,6 @@ function Register() {
           email,
           password
         );
-        localStorage.setItem(
-          "currentUserUid",
-          JSON.stringify(currentUser.user.uid)
-        );
-
         let urlPhoto = null;
         if (file) {
           const storageRef = ref(storage, currentUser.user.uid);
@@ -60,7 +55,7 @@ function Register() {
           const snapshot = await uploadTask;
           const downloadURL = await getDownloadURL(snapshot.ref);
           urlPhoto = downloadURL;
-        }
+        } 
 
         try {
           await updateProfile(currentUser.user, {
@@ -71,7 +66,12 @@ function Register() {
             userName: userName,
             uuid: currentUser.user.uid,
             photoUrl: file ? urlPhoto : defualtImage,
-          });
+            online:true
+          })
+          localStorage.setItem(
+            "currentUserUid",
+            JSON.stringify(currentUser.user.uid)
+          );
         } catch (error) {
           const errorCode = error.code;
           setErrorMessage(errorCode);

@@ -7,7 +7,7 @@ export const SelectedChatContextProvider = ({ children }) => {
   const [lastMessage, setlastMessage] = useState({})
 
   return (
-    <SelectedChatContext.Provider value={{ data, setdata,lastMessage,setlastMessage }}>
+    <SelectedChatContext.Provider value={{data, setdata,lastMessage,setlastMessage }}>
       {children}
     </SelectedChatContext.Provider>
   );

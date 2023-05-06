@@ -6,12 +6,10 @@ import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { useRouter } from "next/router";
 const SingIn = () => {
   const router = useRouter();
-  const [IsPassordMatch, setIsPasswordMatch] = useState(true);
   const [ErrorMessage, setErrorMessage] = useState(null);
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
-      const uid = user.uid;
       router.push("/");
     }
   });
@@ -24,6 +22,10 @@ const SingIn = () => {
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       router.push("/");
+      localStorage.setItem(
+        "currentUserUid",
+        JSON.stringify(auth.currentUser.uid)
+      );
       const user = userCredential.user;
       console.log(user);
     })

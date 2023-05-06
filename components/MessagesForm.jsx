@@ -11,13 +11,11 @@ function MessagesForm() {
   const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
   const [SelectedChat, SetSelectedChat] = useState(null);
-
   const getAllDataFromFireBase = () => {
     const selectedChat = localStorage.getItem("selectedChat");
     const SelectChat = JSON.parse(selectedChat)
-
     const currentUserUid = JSON.parse(localStorage.getItem("currentUserUid"))
-
+    console.log(currentUserUid)
     SetSelectedChat(JSON.parse(selectedChat))
     const combaindId =
     currentUserUid > SelectChat?.uuid
@@ -33,10 +31,11 @@ function MessagesForm() {
     });
     return unsubscribe; // return a function to clean up the listener
   };
-
   useEffect(() => {
     const unsubscribe = getAllDataFromFireBase();
-    return () => unsubscribe(); // clean up the listener when the component unmounts
+    return () => {
+      unsubscribe()
+    }; // clean up the listener when the component unmounts
   }, [data])
   return (
     <>
@@ -58,8 +57,6 @@ function MessagesForm() {
                 <span className=" font-semibold text-xl text-[#ffffff]">
                   {SelectedChat.userName}
                 </span>
-
-                <p className=" text-green-500">online</p>
               </div>
               <div>
                 <span className="text-white px-7">

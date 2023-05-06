@@ -6,15 +6,18 @@ import { auth, db } from "@/Firebase/firebase";
 import { doc, onSnapshot } from "firebase/firestore";
 import { UseDate } from "@/Hooks/UseDate";
 function Friend({ userName, photoUrl, uuid }) {
-  const { data, setdata } = useContext(SelectedChatContext);
+  const {data, setdata } = useContext(SelectedChatContext);
   const [lastMessage, setlastMessage] = useState(null);
   const [seen, setSeen] = useState(true);
+  const [online, setOnline] = useState(false);
 
 
   useEffect(() => {
     const unsubscribe = getTheLastMessage();
+    const unsubscribeStatus = getUserStatus()
     return () => {
       unsubscribe();
+      unsubscribeStatus()
     };
   }, [data]);
   const getTheLastMessage = () => {
@@ -35,7 +38,12 @@ function Friend({ userName, photoUrl, uuid }) {
       }
     });
   };
-
+  const getUserStatus = () => {
+    const docRef = doc(db, "users", uuid);
+    return onSnapshot(docRef, (doc) => {
+      setOnline(doc.data()?.online)
+    })
+  }
   const handleSelectedChat = async () => {
     const selectedChat = JSON.stringify({ uuid, userName, photoUrl })
     localStorage.setItem('selectedChat',selectedChat)
@@ -49,7 +57,7 @@ function Friend({ userName, photoUrl, uuid }) {
       } lg:p-3 rounded-full flex p-1 lg:rounded-none items-center transition duration-300 cursor-pointer hover:bg-[#2d2d2d]`}
     >
       <div className=" relative">
-      <div className=" top-1 absolute w-3 h-3 bg-green-500 rounded-full right-0"></div>
+      <div className={` ${online?'bg-green-500':'bg-gray-500'}  top-1 absolute w-3 h-3  rounded-full right-0`}></div>
         <Image
           className="rounded-full h-14 w-14 lg:w-16"
           src={photoUrl}

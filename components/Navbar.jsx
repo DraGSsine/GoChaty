@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import Image from "next/image";
-import Logo from "@/public/GoChatyLogo.png";
+import Logo from "/public/logo.ico";
 import Link from "next/link";
 import { Heart, Home, Messages, Notificaion, Search } from "@/public/Icons";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "@/Firebase/firebase";
 import AddFriend from "./AddFriend";
-import defUaltImage from '../public/DefUaltImage.jpg'
+import defUaltImage from '/public/DefUaltImage.jpg'
 
 function Navbar() {
   const [searchInput,setSearchInput]=useState('')
@@ -23,12 +23,12 @@ function Navbar() {
     setUsers(
       allUsers.filter((user) => user.userName.startsWith(e.target.value||' ') && user.uuid != auth.currentUser.uid)
     );
-    setIsloading(false);
+    setIsloading(false)
   }
   return (
-    <nav className=" bg-[#1A1A1A] gap-5 flex-row justify-center flex md:justify-between h-[8vh] border-b lg:border-none md:h-[13vh] px-5 items-center">
+    <nav className=" bg-[#1A1A1A] gap-5 flex-row justify-center flex md:justify-between h-[8vh] border-b lg:border-none md:h-[13vh] px-10 items-center">
       <div className="w-[33%] hidden md:inline-flex">
-        <Image alt="logo" src={Logo} width={100} height={100} />
+        <Image alt="logo" src={Logo} width={80} height={80} />
       </div>
       <ul className="flex lg:space-x-5 space-x-2 lg:w-[33%] justify-center">
         <li className="h-10 w-8 cursor-pointer text-[#5b2dc3]">
