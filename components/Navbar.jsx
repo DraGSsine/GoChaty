@@ -6,6 +6,7 @@ import { Heart, Home, Messages, Notificaion, Search } from "@/public/Icons";
 import { collection, getDocs } from "firebase/firestore";
 import { auth, db } from "@/Firebase/firebase";
 import AddFriend from "./AddFriend";
+import defUaltImage from '../public/DefUaltImage.jpg'
 
 function Navbar() {
   const [searchInput,setSearchInput]=useState('')
@@ -24,13 +25,12 @@ function Navbar() {
     );
     setIsloading(false);
   }
-  console.log('>>>>>>',users)
   return (
-    <nav className=" bg-[#1A1A1A] gap-5 flex-row justify-center flex md:justify-between h-[13vh] px-5 items-center">
+    <nav className=" bg-[#1A1A1A] gap-5 flex-row justify-center flex md:justify-between h-[8vh] border-b lg:border-none md:h-[13vh] px-5 items-center">
       <div className="w-[33%] hidden md:inline-flex">
         <Image alt="logo" src={Logo} width={100} height={100} />
       </div>
-      <ul className="flex space-x-5 w-[33%] justify-center">
+      <ul className="flex lg:space-x-5 space-x-2 lg:w-[33%] justify-center">
         <li className="h-10 w-8 cursor-pointer text-[#5b2dc3]">
           <Link href="/">
             <Home />
@@ -52,7 +52,7 @@ function Navbar() {
           </Link>
         </li>
       </ul>
-      <div  onMouseLeave={()=>setTimeout(() => {setSearchInput('')}, 300)}    className="md:w-[33%] relative flex justify-center md:justify-end">
+      <div  onMouseLeave={()=>setTimeout(() => {setSearchInput('')}, 300)}    className=" md:w-[33%] relative flex justify-center md:justify-end">
         <div className=" w-full flex items-center px-3 border-2 md:w-4/6  rounded-xl overflow-hidden border-[#5b2dc3]">
           <i className=" inline-block w-7 text-[#5b2dc3]">
             <Search />
@@ -65,7 +65,7 @@ function Navbar() {
           />
         </div>
         {searchInput && (
-          <div className=" min-[40vh]: absolute top-11 space-y-4 p-2 rounded-xl bg-white w-4/6">
+          <div className=" z-50 min-[40vh]: absolute top-11 space-y-4 p-2 rounded-xl bg-white w-full md:w-4/6">
             {
               users.length ? users.map((user,index) =>
               IsLoading ? (
@@ -78,7 +78,7 @@ function Navbar() {
                   key={user.uuid}
                   userName={user.userName}
                   uuid={user.uuid}
-                  photoUrl={user.photoUrl}
+                  photoUrl={user.photoUrl ? user.photoUrl:defUaltImage}
                   IsLoading={IsLoading}
                 />
               )

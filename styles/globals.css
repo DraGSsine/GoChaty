@@ -3,9 +3,9 @@
 @tailwind utilities;
 @layer components {
     .MyMessage{
-        @apply p-5 ml-auto text-white font-semibold bg-[#5B2DC3] rounded-t-2xl w-96 rounded-l-2xl
+        @apply self-end px-[16px] py-[12px] max-w-sm w-fit text-white font-semibold bg-[#5B2DC3] rounded-br-[4px] rounded-[24px]
     }
     .FriendMessage{
-        @apply p-5 bg-gray-200 font-semibold rounded-b-2xl w-96 rounded-r-2xl
+        @apply  px-[16px] py-[12px] max-w-sm bg-gray-200 font-semibold w-fit rounded-[24px] rounded-bl-[4px]
     }
 }

@@ -16,7 +16,10 @@ function MessageInput() {
   const [newMessge, setNewMessage] = useState("");
 
   const handleAddFriends = async () => {
-    const userDocRef = doc(db, "users", data?.uuid);
+    const selectedChat = localStorage.getItem("selectedChat");
+    const SelectChat = JSON.parse(selectedChat);
+
+    const userDocRef = doc(db, "users", SelectChat.uuid);
     const subCollectionRef = collection(userDocRef, "Friends");
     const friendDocRef = doc(subCollectionRef, auth.currentUser.uid);
 
@@ -27,18 +30,21 @@ function MessageInput() {
       await setDoc(friendDocRef, {
         uuid: auth.currentUser.uid,
         userName: auth.currentUser.displayName,
-        photoUrl: "",
+        photoUrl: auth.currentUser.photoURL,
       });
     }
   };
   const HandleSendMessages = async (e) => {
+    e.preventDefault();
     handleAddFriends();
+    const selectedChat = localStorage.getItem("selectedChat");
+    const SelectChat = JSON.parse(selectedChat)
+
     const Time = new Date();
     const combaindId =
-      auth.currentUser.uid > data.uuid
-        ? auth.currentUser.uid + data.uuid
-        : data.uuid + auth.currentUser.uid;
-    e.preventDefault();
+      auth.currentUser.uid > SelectChat.uuid
+        ? auth.currentUser.uid + SelectChat.uuid
+        : SelectChat.uuid + auth.currentUser.uid;
     setNewMessage("");
     if (newMessge === "") return;
     const messageDetails = {

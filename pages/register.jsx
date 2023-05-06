@@ -11,14 +11,17 @@ import { setDoc, doc } from "firebase/firestore";
 import { db, storage } from "@/Firebase/firebase";
 import { useContext } from "react";
 import { SelectedChatContext } from "@/context/SelectedChatContext";
-import { UploadProfileIcon } from "@/public/Icons";
 import { ref, uploadBytesResumable, getDownloadURL } from "firebase/storage";
-import DefaultProfile from '../public/77478b89aee3a9c48af9835a1b0e1db4.png'
+import uploadImage from "../public/DefUaltImage.jpg"
+import Image from "next/image";
 function Register() {
+  const defualtImage =
+    "https://firebasestorage.googleapis.com/v0/b/chat-app-7884d.appspot.com/o/DefUaltImage.jpg?alt=media&token=b4ea5395-70a7-4fc8-97a0-a2b0a32732b0";
   const router = useRouter();
   const { setdata } = useContext(SelectedChatContext);
   const [IsPassordMatch, setIsPasswordMatch] = useState(true);
   const [ErrorMessage, setErrorMessage] = useState(null);
+  const [PreviewProfile, setPreviewProfile] = useState();
 
   onAuthStateChanged(auth, (user) => {
     if (user) {
@@ -26,48 +29,86 @@ function Register() {
     }
   });
   const HandleSingUp = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
     setdata({});
-    const ProfileURL = e.target[0].files[0]
+    const file = e.target[0].files[0];
     const fullName = e.target[1].value;
     const userName = e.target[2].value;
     const email = e.target[3].value;
     const password = e.target[4].value;
     const confirmPassword = e.target[5].value;
-
     if (password !== confirmPassword) {
       setIsPasswordMatch(false);
       e.target[3].value = "";
       e.target[4].value = "";
     } else {
       try {
-        const currentUser = await createUserWithEmailAndPassword(auth, email, password);
+        const currentUser = await createUserWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
+        localStorage.setItem(
+          "currentUserUid",
+          JSON.stringify(currentUser.user.uid)
+        );
 
-        const storageRef = ref(storage, currentUser.user.uid)
+        let urlPhoto = null;
+        if (file) {
+          const storageRef = ref(storage, currentUser.user.uid);
+          const uploadTask = uploadBytesResumable(storageRef, file);
+          const snapshot = await uploadTask;
+          const downloadURL = await getDownloadURL(snapshot.ref);
+          urlPhoto = downloadURL;
+        }
 
-        await uploadBytesResumable(storageRef, ProfileURL).then(()=>{
-          getDownloadURL(storageRef).then(async (downloadURL) => {
-            try {
-              await updateProfile(currentUser.user, {
-                displayName: userName,
-                photoURL: downloadURL,
-              });
-              await setDoc(doc(db, "users",currentUser.user.uid), {
-                userName: userName,
-                uuid: currentUser.user.uid,
-                photoUrl: downloadURL,
-              });
-            } catch (error) {
-              const errorCode = error.code;
-              setErrorMessage(errorCode);
-            }
-          })
-        });
+        try {
+          await updateProfile(currentUser.user, {
+            displayName: userName,
+            photoURL: file ? urlPhoto : defualtImage,
+          });
+          await setDoc(doc(db, "users", currentUser.user.uid), {
+            userName: userName,
+            uuid: currentUser.user.uid,
+            photoUrl: file ? urlPhoto : defualtImage,
+          });
+        } catch (error) {
+          const errorCode = error.code;
+          setErrorMessage(errorCode);
+        }
+
+        // await uploadBytesResumable(storageRef, file).then(()=>{
+        //   getDownloadURL(storageRef).then(async (downloadURL) => {
+        //     try {
+        //       await updateProfile(currentUser.user, {
+        //         displayName: userName,
+        //         photoURL:  file ? downloadURL :defualtImage,
+        //       });
+        //       await setDoc(doc(db, "users",currentUser.user.uid), {
+        //         userName: userName,
+        //         uuid: currentUser.user.uid,
+        //         photoUrl: file ? downloadURL :defualtImage
+        //       });
+        //     } catch (error) {
+        //       const errorCode = error.code;
+        //       setErrorMessage(errorCode);
+        //     }
+        //   })
+        // });
       } catch (error) {
         const errorCode = error.code;
         setErrorMessage(errorCode);
       }
     }
+  };
+  const HandleAddPreviewProfile = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.addEventListener("load", (event) => {
+      setPreviewProfile(event.target.result) 
+    })
+
+    reader.readAsDataURL(file);
   };
   return (
     <div>
@@ -145,9 +186,21 @@ function Register() {
               Create an Account{" "}
             </p>
             <div className=" flex justify-center">
-              <input className=" hidden" type="file" id="ProfileImg" />
-              <label className=" cursor-pointer" htmlFor="ProfileImg">
-                <UploadProfileIcon />
+              <input
+                onChange={HandleAddPreviewProfile}
+                className=" hidden"
+                type="file"
+                id="ProfileImg"
+              />
+              <label className=" border-4 w-30 h-30 rounded-full flex items-center justify-center border-[#5C2CC3] cursor-pointer" htmlFor="ProfileImg">
+              {console.log(PreviewProfile)}
+                <Image
+                className=" rounded-full w-[120px] max-h-[120px]"
+                  src={!PreviewProfile?uploadImage:PreviewProfile}
+                  width={100}
+                  height={100}
+                  alt="profile"
+                />
               </label>
             </div>
             <div className="flex justify-between gap-5">
@@ -243,10 +296,10 @@ function Register() {
                   className={`'pl-2 outline-none border-none'${
                     !IsPassordMatch && " placeholder:text-red-600"
                   }`}
-                  type="text"
+                  type="password"
                   name=""
                   id=""
-                  value="123456"
+                  defaultValue="123456"
                   placeholder={
                     !IsPassordMatch ? "passords are not match" : "Password"
                   }
@@ -274,10 +327,10 @@ function Register() {
                   className={`'pl-2 outline-none border-none'${
                     !IsPassordMatch && " placeholder:text-red-600"
                   }`}
-                  type="text"
+                  type="password"
                   name=""
                   id=""
-                  value="123456"
+                  defaultValue="123456"
                   placeholder={
                     !IsPassordMatch ? "passords are not match" : "Password"
                   }

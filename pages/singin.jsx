@@ -38,7 +38,7 @@ const SingIn = () => {
   return (
     <>
       {/* ====== Forms Section Start */}
-      <section className="bg-[#F4F7FF] py-20 lg:py-[120px]">
+      <section className="bg-[#F4F7FF] py-20 lg:py-[48px]">
       {ErrorMessage && (
         <div
           id="alert-border-2"

@@ -3,12 +3,14 @@ import Friend from "./Friend";
 import { auth } from "@/Firebase/firebase";
 import { collection, doc, getDoc, onSnapshot } from "firebase/firestore";
 import { db } from "@/Firebase/firebase";
+
 function FriendsList() {
   const [Friends, setFriends] = useState([]);
+
   const getAllDataFromFireBase = async () => {
+    const uuid = JSON.parse(localStorage.getItem('currentUserUid'))
     try {
-      
-      const userDocRef = doc(db, "users", auth.currentUser.uid);
+      const userDocRef = doc(db, "users",uuid);
       const friendsCollRef = collection(userDocRef, "Friends");
       onSnapshot(friendsCollRef, (snapshot) => {
         const updatedFriends = [];
@@ -22,13 +24,12 @@ function FriendsList() {
   useEffect(() => {
     getAllDataFromFireBase();
   }, []);
-
   return (
-    <div className="bg-[#282828] h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl">
+    <div className="bg-[#282828] items-center h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl lg:rounded-b-none">
       <h1 className=" p-5 hidden lg:inline-flex text-white font-semibold py-4 text-4xl">
         Friends
       </h1>
-      <div className=" flex lg:flex-col space-y-3">
+      <div className=" gap-1 px-2 lg:px-0 h-full flex lg:flex-col lg:space-y-3 lg:h-auto rounded-full lg:rounded-none lg:overflow-auto overflow-hidden">
         {Friends.map((friend, index) => (
           <Friend
             key={friend.uuid + index}
