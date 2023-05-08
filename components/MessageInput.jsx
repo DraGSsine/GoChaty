@@ -9,10 +9,7 @@ import {
   setDoc,
   updateDoc,
 } from "firebase/firestore";
-import { useContext } from "react";
-import { SelectedChatContext } from "@/context/SelectedChatContext";
 function MessageInput() {
-  const { data } = useContext(SelectedChatContext);
   const [newMessge, setNewMessage] = useState("");
 
   const handleAddFriends = async () => {

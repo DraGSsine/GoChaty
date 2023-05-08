@@ -20,7 +20,7 @@ function FriendsList() {
     } catch (error) {
       console.error(error);
     }
-  };
+  }
   useEffect(() => {
     getAllDataFromFireBase();
   }, []);

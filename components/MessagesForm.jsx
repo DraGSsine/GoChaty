@@ -13,14 +13,14 @@ function MessagesForm() {
   const [SelectedChat, SetSelectedChat] = useState(null);
   const getAllDataFromFireBase = () => {
     const selectedChat = localStorage.getItem("selectedChat");
-    const SelectChat = JSON.parse(selectedChat)
-    const currentUserUid = JSON.parse(localStorage.getItem("currentUserUid"))
-    console.log(currentUserUid)
-    SetSelectedChat(JSON.parse(selectedChat))
+    const SelectChat = JSON.parse(selectedChat);
+    const currentUserUid = JSON.parse(localStorage.getItem("currentUserUid"));
+    console.log(currentUserUid);
+    SetSelectedChat(JSON.parse(selectedChat));
     const combaindId =
-    currentUserUid > SelectChat?.uuid
+      currentUserUid > SelectChat?.uuid
         ? currentUserUid + SelectChat?.uuid
-        : SelectChat?.uuid +currentUserUid;
+        : SelectChat?.uuid + currentUserUid;
     const docRef = doc(db, "chats", combaindId);
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {
@@ -29,14 +29,14 @@ function MessagesForm() {
         setChats([]);
       }
     });
-    return unsubscribe; // return a function to clean up the listener
-  };
+    return unsubscribe; // return a function to clean up the listener 
+  }
   useEffect(() => {
     const unsubscribe = getAllDataFromFireBase();
     return () => {
-      unsubscribe()
+      unsubscribe();
     }; // clean up the listener when the component unmounts
-  }, [data])
+  }, [data]);
   return (
     <>
       {SelectedChat ? (

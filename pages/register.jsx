@@ -193,7 +193,6 @@ function Register() {
                 id="ProfileImg"
               />
               <label className=" border-4 w-30 h-30 rounded-full flex items-center justify-center border-[#5C2CC3] cursor-pointer" htmlFor="ProfileImg">
-              {console.log(PreviewProfile)}
                 <Image
                 className=" rounded-full w-[120px] max-h-[120px]"
                   src={!PreviewProfile?uploadImage:PreviewProfile}

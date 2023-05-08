@@ -9,7 +9,6 @@ export default function App({ Component, pageProps }) {
 
   let status = null;
   const getUserStatus = async () => {
-    console.log("hiii")
     const uuid = JSON.parse(localStorage.getItem("currentUserUid"))
     if(uuid){
       const docRef = doc(db, "users", uuid);
