@@ -9,9 +9,9 @@ export default function App({ Component, pageProps }) {
 
   let status = null;
   const getUserStatus = async () => {
-    const uuid = JSON.parse(localStorage.getItem("currentUserUid"))
-    if(uuid){
-      const docRef = doc(db, "users", uuid);
+    const uid = JSON.parse(localStorage.getItem("currentUserUid"))
+    if(uid?.uid){
+      const docRef = doc(db, "users", uid.uid);
       await updateDoc(docRef, { online: true })
       document.onvisibilitychange = async () => {
         if (document.hidden) {

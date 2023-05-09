@@ -8,9 +8,9 @@ function FriendsList() {
   const [Friends, setFriends] = useState([]);
 
   const getAllDataFromFireBase = async () => {
-    const uuid = JSON.parse(localStorage.getItem('currentUserUid'))
+    const uid = JSON.parse(localStorage.getItem('currentUserUid'))
     try {
-      const userDocRef = doc(db, "users",uuid);
+      const userDocRef = doc(db, "users",uid?.uid);
       const friendsCollRef = collection(userDocRef, "Friends");
       onSnapshot(friendsCollRef, (snapshot) => {
         const updatedFriends = [];

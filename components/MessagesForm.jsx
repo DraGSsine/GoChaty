@@ -14,13 +14,13 @@ function MessagesForm() {
   const getAllDataFromFireBase = () => {
     const selectedChat = localStorage.getItem("selectedChat");
     const SelectChat = JSON.parse(selectedChat);
-    const currentUserUid = JSON.parse(localStorage.getItem("currentUserUid"));
-    console.log(currentUserUid);
+    const uid = JSON.parse(localStorage.getItem("currentUserUid"));
+    console.log(uid);
     SetSelectedChat(JSON.parse(selectedChat));
     const combaindId =
-      currentUserUid > SelectChat?.uuid
-        ? currentUserUid + SelectChat?.uuid
-        : SelectChat?.uuid + currentUserUid;
+      uid.uid > SelectChat?.uuid
+        ? uid.uid + SelectChat?.uuid
+        : SelectChat?.uuid + uid.uid;
     const docRef = doc(db, "chats", combaindId);
     const unsubscribe = onSnapshot(docRef, (doc) => {
       if (doc.exists()) {

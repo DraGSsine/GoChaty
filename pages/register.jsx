@@ -32,7 +32,7 @@ function Register() {
     e.preventDefault();
     setdata({});
     const file = e.target[0].files[0];
-    // const fullName = e.target[1].value;
+    const fullName = e.target[1].value;
     const userName = e.target[2].value;
     const email = e.target[3].value;
     const password = e.target[4].value;
@@ -70,7 +70,7 @@ function Register() {
           })
           localStorage.setItem(
             "currentUserUid",
-            JSON.stringify(currentUser.user.uid)
+            JSON.stringify({uid:currentUser.user.uid,userName,fullName,photoUrl: file ? urlPhoto : defualtImage})
           );
         } catch (error) {
           const errorCode = error.code;

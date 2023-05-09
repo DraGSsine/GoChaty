@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Send } from "@/public/Icons";
 import Image from "next/image";
-import img from "/public/DefUaltImage.jpg";
 import EmojiPicker from "emoji-picker-react";
-import { doc, setDoc } from "firebase/firestore";
+import { Timestamp, doc, setDoc } from "firebase/firestore";
 import { auth, db, storage } from "@/Firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { v4 } from "uuid";
 function CreateNewPost() {
   const [PostText, setPostText] = useState("");
   const [Emoji, setEmoji] = useState(false);
+  const [CurrentUser, SetCurrentUser] = useState(null);
   const [PreviewPostImage, setPreviewPostImage] = useState(null);
-  const currentUser = auth.currentUser
 
   const HandleAddPreviewPostImage = (event) => {
     const file = event.target.files[0];
@@ -25,17 +24,18 @@ function CreateNewPost() {
 
   const HandlePost = async (e) => {
     e.preventDefault();
-    console.log(currentUser)
-    const ImageId = v4();
+    const id = v4();
     const PostTitle = e.target[0].value;
     const PostImage = e.target[2].files[0];
     const PostVideo = e.target[3].files;
+    setPostText('')
+    setPreviewPostImage(null)
     // const currentUser = JSON.parse(localStorage.getItem(''))
     try {
       let PostImageUrl = null;
       if (PostImage && PreviewPostImage) {
         try {
-          const storageRef = ref(storage, ImageId);
+          const storageRef = ref(storage, id);
           const uploadTask = uploadBytesResumable(storageRef, PostImage);
           const snapshot = await uploadTask;
           const downloadURL = await getDownloadURL(snapshot.ref);
@@ -44,9 +44,13 @@ function CreateNewPost() {
           console.log(error);
         }
       }
-      await setDoc(doc(db, "posts", ImageId), {
+      await setDoc(doc(db, "posts", id), {
         PostTitle,
-        PostImageUrl,
+        PostImageUrl: PostImageUrl || null,
+        FullName: CurrentUser.fullName,
+        Profile: CurrentUser.photoUrl,
+        UserName: CurrentUser.userName,
+        CreateAt:Timestamp.now()
         // PostVideo,
       });
     } catch (error) {
@@ -54,16 +58,20 @@ function CreateNewPost() {
     }
   };
 
+  useEffect(() => {
+    SetCurrentUser(JSON.parse(localStorage.getItem("currentUserUid")));
+  }, []);
+
   return (
     <form
       onSubmit={HandlePost}
-      className="px-2 md:w-[42rem] gap-2 flex flex-col bg-[#282828] rounded-xl mx-auto  md:px-4 py-4"
+      className="px-2 max-w-[48rem] gap-2 flex flex-col bg-[#282828] rounded-3xl mx-auto  md:px-4 py-4"
     >
-      <div className="w-full justify-center items-center gap-3    flex">
+      <div className="w-full justify-center items-center gap-3 flex">
         <div className="hidden sm:block">
           <Image
-            className="rounded-full"
-            src={""}
+            className="rounded-full max-h-14 w-14"
+            src={CurrentUser?.photoUrl}
             width={50}
             height={50}
             alt="img"

@@ -5,8 +5,8 @@ import React from "react";
 
 function SignOut() {
   const HndleSignOut = async () => {
-    const uuid = JSON.parse(localStorage.getItem("currentUserUid"))
-    const docRef = doc(db, "users", uuid);
+    const uid = JSON.parse(localStorage.getItem("currentUserUid"))
+    const docRef = doc(db, "users", uid.uid);
     await updateDoc(docRef, { online: false });
 
     localStorage.clear();
