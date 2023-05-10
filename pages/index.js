@@ -1,24 +1,12 @@
-import Image from "next/image";
-import { Inter } from "next/font/google";
-import Link from "next/link";
-import { signOut } from "firebase/auth";
-import {auth} from "@/Firebase/firebase";
+import { auth } from "@/Firebase/firebase";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-
+import SideBar from "@/components/LeftSideBar/SideBar";
+import Posts from "@/components/Posts/Posts";
+import RightSideBar from "@/components/RightSideBar/RightSideBar";
 export default function Home() {
-  const router = useRouter()
-
-  const HndleSignOut = ()=>{
-    signOut(auth)
-    .then(() => {
-      router.push('/singin')
-    })
-    .catch((error) => {
-      // An error happened.
-    });
-  }
+  const router = useRouter();
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (!user) {
@@ -28,10 +16,10 @@ export default function Home() {
   }, []);
 
   return (
-    <div className=" text-lg font-semibold space-x-4 p-10 bg-[#1A1A1A]">
-      <Link href="/singin">singin</Link>
-      <Link href="/register">register</Link>
-      <button onClick={HndleSignOut}>Sign out</button>
+    <div className="flex justify-center md:justify-between text-lg font-semibold md:space-x-4 md:px-10 bg-[#1A1A1A]">
+      <SideBar />
+      <Posts />
+      <RightSideBar/>
     </div>
   );
 }

@@ -1,22 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import FriendProfile from "../public/77478b89aee3a9c48af9835a1b0e1db4.png";
 import { useContext } from "react";
 import { SelectedChatContext } from "@/context/SelectedChatContext";
 import { auth, db } from "@/Firebase/firebase";
-import { doc, getDoc, onSnapshot, updateDoc } from "firebase/firestore";
+import { doc, onSnapshot } from "firebase/firestore";
 import { UseDate } from "@/Hooks/UseDate";
-
 function Friend({ userName, photoUrl, uuid }) {
-  const { data, setdata } = useContext(SelectedChatContext);
+  const {data, setdata } = useContext(SelectedChatContext);
   const [lastMessage, setlastMessage] = useState(null);
   const [seen, setSeen] = useState(true);
+  const [online, setOnline] = useState(false);
 
 
   useEffect(() => {
     const unsubscribe = getTheLastMessage();
+    const unsubscribeStatus = getUserStatus()
     return () => {
       unsubscribe();
+      unsubscribeStatus()
     };
   }, [data]);
   const getTheLastMessage = () => {
@@ -37,9 +38,15 @@ function Friend({ userName, photoUrl, uuid }) {
       }
     });
   };
-
+  const getUserStatus = () => {
+    const docRef = doc(db, "users", uuid);
+    return onSnapshot(docRef, (doc) => {
+      setOnline(doc.data()?.online)
+    })
+  }
   const handleSelectedChat = async () => {
-    console.log({ uuid, userName, photoUrl })
+    const selectedChat = JSON.stringify({ uuid, userName, photoUrl })
+    localStorage.setItem('selectedChat',selectedChat)
     setdata({ uuid, userName, photoUrl });
   }
   return (
@@ -47,11 +54,14 @@ function Friend({ userName, photoUrl, uuid }) {
       onClick={handleSelectedChat}
       className={`${
         lastMessage?.seen || seen ? " bg-[#282828]" : "bg-[#5b2dc3]"
-      } rounded-full lg:rounded-none p-2 flex lg:p-3 items-center transition duration-300 cursor-pointer hover:bg-[#2d2d2d]`}
+
+      } lg:p-3 rounded-full flex p-1 lg:rounded-none items-center transition duration-300 cursor-pointer hover:bg-[#2d2d2d]`}
     >
-      <div>
+      <div className=" relative">
+      <div className={` ${online?'bg-green-500':'bg-gray-500'}  top-1 absolute w-3 h-3  rounded-full right-0`}></div>
         <Image
-          className="rounded-full h-10 w-10 lg:h-14 lg:w-16"
+
+          className="rounded-full h-14 w-14 lg:w-16"
           src={photoUrl}
           alt="userProfile"
           width={100}
