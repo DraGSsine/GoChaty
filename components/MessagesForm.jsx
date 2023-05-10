@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { Info } from "@/public/Icons";
 import Message from "./Message";
@@ -8,6 +8,7 @@ import { SelectedChatContext } from "@/context/SelectedChatContext";
 import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/Firebase/firebase";
 function MessagesForm() {
+  const ref = useRef();
   const { data } = useContext(SelectedChatContext);
   const [Chats, setChats] = useState([]);
 
@@ -31,14 +32,19 @@ function MessagesForm() {
       }
     });
 
-    return unsubscribe; // return a function to clean up the listener 
-  }
+    return unsubscribe; // return a function to clean up the listener
+  };
   useEffect(() => {
     const unsubscribe = getAllDataFromFireBase();
     return () => {
       unsubscribe();
     }; // clean up the listener when the component unmounts
   }, [data]);
+  useEffect(() => {
+    if (ref.current) {
+      ref.current.scrollTop = ref.current.scrollHeight
+    }
+  }, [Chats]);
 
   return (
     <>
@@ -48,7 +54,6 @@ function MessagesForm() {
             <div>
               <Image
                 className="rounded-full h-14 w-16"
-
                 src={SelectedChat.photoUrl}
                 alt="userProfile"
                 width={100}
@@ -69,7 +74,7 @@ function MessagesForm() {
               </div>
             </div>
           </div>
-          <div className=" h-full overflow-y-scroll">
+          <div ref={ref} className=" h-full overflow-y-scroll">
             {Chats?.message?.map((chat, index) => (
               <Message
                 key={index}

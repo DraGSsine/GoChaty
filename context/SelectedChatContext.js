@@ -5,9 +5,9 @@ export const SelectedChatContext = createContext();
 export const SelectedChatContextProvider = ({ children }) => {
   const [data, setdata] = useState({});
   const [lastMessage, setlastMessage] = useState({})
-
+  const [ShowSideBar, setShowSideBar] = useState(false)
   return (
-    <SelectedChatContext.Provider value={{data, setdata,lastMessage,setlastMessage }}>
+    <SelectedChatContext.Provider value={{setShowSideBar,ShowSideBar,data, setdata,lastMessage,setlastMessage }}>
       {children}
     </SelectedChatContext.Provider>
   );

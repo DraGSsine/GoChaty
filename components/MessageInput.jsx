@@ -26,7 +26,7 @@ function MessageInput() {
     } else {
       await setDoc(friendDocRef, {
         uuid: auth.currentUser.uid,
-        userName: auth.currentUser.displayName,
+        userName: JSON.parse(auth.currentUser.displayName).userName,
         photoUrl: auth.currentUser.photoURL,
       });
     }

@@ -18,7 +18,6 @@ function Message({ user, message, createdAt }) {
         : SelectChat.uuid + auth?.currentUser?.uid;
 
     if (auth.currentUser.uid != user) {
-      console.log(combaindId)
       const docRef = doc(db, "chats", combaindId);
       const docSnap = await getDoc(docRef);
 

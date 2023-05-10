@@ -2,7 +2,7 @@ import React from "react";
 
 function PostLoading() {
   return (
-    <div className=" w-11/12 py-5 flex-col bg-[#282828] shadow-lg rounded-3xl mx-auto lg:max-w-[48rem] md:max-w-2xl ">
+    <div className=" py-5 flex-col bg-[#282828] shadow-lg rounded-3xl mx-auto lg:max-w-[48rem] md:max-w-2xl ">
       <div className="flex items-center justify-between px-4 pb-2">
         <div className="flex items-center">
           <div

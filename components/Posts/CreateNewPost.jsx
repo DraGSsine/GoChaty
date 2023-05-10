@@ -3,13 +3,13 @@ import { Send } from "@/public/Icons";
 import Image from "next/image";
 import EmojiPicker from "emoji-picker-react";
 import { Timestamp, doc, setDoc } from "firebase/firestore";
-import { auth, db, storage } from "@/Firebase/firebase";
+import {  auth, db, storage } from "@/Firebase/firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { v4 } from "uuid";
 function CreateNewPost() {
   const [PostText, setPostText] = useState("");
   const [Emoji, setEmoji] = useState(false);
-  const [CurrentUser, SetCurrentUser] = useState(null);
+  const CurrentUser = auth.currentUser
   const [PreviewPostImage, setPreviewPostImage] = useState(null);
 
   const HandleAddPreviewPostImage = (event) => {
@@ -28,9 +28,8 @@ function CreateNewPost() {
     const PostTitle = e.target[0].value;
     const PostImage = e.target[2].files[0];
     const PostVideo = e.target[3].files;
-    setPostText("");
-    setPreviewPostImage(null);
-    // const currentUser = JSON.parse(localStorage.getItem(''))
+    setPostText('')
+    setPreviewPostImage(null)
     try {
       let PostImageUrl = null;
       if (PostImage && PreviewPostImage) {
@@ -48,9 +47,9 @@ function CreateNewPost() {
         PostTitle,
         PostImageUrl: PostImageUrl || null,
         FullName: JSON.parse(CurrentUser.displayName).fullName,
-        Profile: CurrentUser.photoURL,
+        Profile: CurrentUser?.photoURL,
         UserName: JSON.parse(CurrentUser.displayName).userName,
-        CreateAt: Timestamp.now(),
+        CreateAt:Timestamp.now()
         // PostVideo,
       });
     } catch (error) {
@@ -58,26 +57,12 @@ function CreateNewPost() {
     }
   };
 
-  useEffect(() => {
-      SetCurrentUser(auth?.currentUser);
-
-  }, []);
-
   return (
     <form
       onSubmit={HandlePost}
       className="px-2 max-w-[48rem] gap-2 flex flex-col bg-[#282828] rounded-3xl mx-auto  md:px-4 py-4"
     >
       <div className="w-full justify-center items-center gap-3 flex">
-        <div className="hidden sm:block">
-          <Image
-            className="rounded-full max-h-14 w-14"
-            src={CurrentUser?.photoURL}
-            width={50}
-            height={50}
-            alt="img"
-          />
-        </div>
         <div className="flex-grow">
           <div className=" relative rounded-2xl items-center  w-full flex h-14">
             <input

@@ -16,7 +16,8 @@ function CreateComment({PostId}) {
       comments: comments?.length
         ? [...comments, { user: CurrentUser.uid,comment }]
         : [{ user: CurrentUser.uid,comment }],
-    });
+    })
+    e.target[0].value=''
   };
 
   return (
