@@ -95,6 +95,11 @@ const SingIn = () => {
             <div className="flex flex-wrap">
               <div className="w-full">
                 <div className="relative mx-auto max-w-[525px] overflow-hidden rounded-lg bg-white py-16 px-10 text-center sm:px-12 md:px-[60px]">
+                  <div className="flex flex-col font-bold">
+                  <small>Email:demo@gochaty.com</small>
+                  <small>Password:123456</small>
+                  </div>
+
                   <div className="mb-10 text-center md:mb-16">
                     <a className="mx-auto inline-block max-w-[160px]"></a>
                   </div>

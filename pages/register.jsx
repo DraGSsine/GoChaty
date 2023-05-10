@@ -217,7 +217,6 @@ function Register() {
                       />
                     </svg>
                     <input
-                      defaultValue="yassine ouchen"
                       className="pl-2 outline-none border-none"
                       type="text"
                       name=""
@@ -246,7 +245,6 @@ function Register() {
                       name=""
                       id=""
                       placeholder="Username"
-                      defaultValue="dragssine"
                     />
                   </div>
                 </div>
@@ -298,7 +296,6 @@ function Register() {
                       type="password"
                       name=""
                       id=""
-                      defaultValue="123456"
                       placeholder={
                         !IsPassordMatch ? "passords are not match" : "Password"
                       }
@@ -329,7 +326,6 @@ function Register() {
                       type="password"
                       name=""
                       id=""
-                      defaultValue="123456"
                       placeholder={
                         !IsPassordMatch ? "passords are not match" : "Password"
                       }
