@@ -17,7 +17,7 @@ function SideBar() {
   
   console.log(ShowSideBar)
   return (
-    <div className={`${ShowSideBar?'flex absolute w-8/12 z-10 rounded-none left-0':' hidden'} md:flex pt-12 md:pt-0 flex-col md:rounded-b-none md:pb-28 h-screen w-[20%] md:sticky top-0 rounded-t-3xl bg-[#282828]`}>
+    <div className={`${ShowSideBar?'flex absolute w-8/12 z-10 rounded-none left-0':' hidden'} md:flex pt-12 md:pt-0 flex-col md:rounded-b-none md:pb-28 h-screen md:w-[20%] md:sticky top-0 md:rounded-t-3xl bg-[#282828]`}>
       <div>
         <div className=" relative bg-[#1A1A1A] rounded-3xl m-2 h-40">
           <Image

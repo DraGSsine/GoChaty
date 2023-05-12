@@ -17,7 +17,7 @@ function Navbar() {
       <div className="w-[33%] hidden md:inline-flex">
         <Image alt="logo" src={Logo} width={85} height={85} />
       </div>
-      <ul className="flex md:mr-4 lg:space-x-5 space-x-5 lg:w-[33%] justify-center">
+      <ul className="flex md:mr-4 lg:space-x-5 space-x-5 lg:w-[33%]">
         <li className="h-10 w-8 cursor-pointer text-[#5b2dc3]">
           <Link href="/">
             <Home />
