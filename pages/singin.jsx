@@ -106,7 +106,6 @@ const SingIn = () => {
                   <form onSubmit={HandleSingIn}>
                     <div className="mb-6">
                       <input
-                        value='LogIn'
                         type="text"
                         placeholder="Email"
                         className="bordder-[#E9EDF4] w-full rounded-md border bg-[#FCFDFE] py-3 px-5 text-base text-body-color placeholder-[#ACB6BE] outline-none focus:border-primary focus-visible:shadow-none"
@@ -122,7 +121,7 @@ const SingIn = () => {
                     <div className="mb-10">
                       <input
                         type="submit"
-                        defaultValue="Sign In"
+                        tValue="Sign In"
                         className="bordder-primary w-full cursor-pointer rounded-md border bg-[#4235BB]  py-3 px-5 text-base text-white transition hover:bg-opacity-90"
                       />
                     </div>
