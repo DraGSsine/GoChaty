@@ -15,7 +15,9 @@ function Navbar() {
     <nav className="bg-[#1A1A1A] gap-5 md:flex-row flex justify-between h-[8vh] border-b lg:border-none md:h-[13vh] px-10 items-center">
       <BurgerBtn/>
       <div className="w-[33%] hidden md:inline-flex">
-        <Image alt="logo" src={Logo} width={85} height={85} />
+        <Link href="/">
+          <Image alt="logo" src={Logo} width={85} height={85} />
+        </Link>
       </div>
       <ul className="flex md:mr-4 lg:space-x-5 space-x-5 lg:w-[33%]">
         <li className="h-10 w-8 cursor-pointer text-[#5b2dc3]">
