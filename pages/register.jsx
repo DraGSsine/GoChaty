@@ -290,7 +290,7 @@ function Register() {
                       />
                     </svg>
                     <input
-                      className={`'pl-2 outline-none border-none'${
+                      className={`'pl-2 w-full outline-none border-none'${
                         !IsPassordMatch && " placeholder:text-red-600"
                       }`}
                       type="password"
@@ -320,7 +320,7 @@ function Register() {
                     </svg>
                     <input
                       formNoValidate
-                      className={`'pl-2 outline-none border-none'${
+                      className={`'pl-2 w-full outline-none border-none'${
                         !IsPassordMatch && " placeholder:text-red-600"
                       }`}
                       type="password"
