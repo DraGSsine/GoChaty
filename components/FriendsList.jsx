@@ -25,12 +25,12 @@ function FriendsList() {
     getAllDataFromFireBase();
   }, []);
   return (
-    <div className="bg-[#282828] items-center h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl lg:rounded-b-none">
+    <div className="bg-[#282828] overflow-y-scroll items-center h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl lg:rounded-b-none">
       <h1 className=" p-5 hidden lg:inline-flex text-white font-semibold py-4 text-4xl">
         Friends
       </h1>
 
-      <div className=" overflow-y-scroll gap-1 px-2 lg:px-0 h-full flex lg:flex-col lg:space-y-3 lg:h-auto rounded-full lg:rounded-none">
+      <div className=" gap-1 px-2 lg:px-0 h-full flex lg:flex-col lg:space-y-3 lg:h-auto rounded-full lg:rounded-none">
         {Friends.map((friend, index) => (
           <Friend
             key={friend.uuid + index}
