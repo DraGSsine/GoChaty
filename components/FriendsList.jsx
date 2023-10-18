@@ -30,7 +30,7 @@ function FriendsList() {
         Friends
       </h1>
 
-      <div className=" overflow-auto gap-1 px-2 lg:px-0 h-full flex lg:flex-col lg:space-y-3 lg:h-auto rounded-full lg:rounded-none">
+      <div className=" overflow-y-scroll gap-1 px-2 lg:px-0 h-full flex lg:flex-col lg:space-y-3 lg:h-auto rounded-full lg:rounded-none">
         {Friends.map((friend, index) => (
           <Friend
             key={friend.uuid + index}
