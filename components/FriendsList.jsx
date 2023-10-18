@@ -25,7 +25,7 @@ function FriendsList() {
     getAllDataFromFireBase();
   }, []);
   return (
-    <div className="bg-[#282828] overflow-y-scroll items-center h-[8vh] lg:w-4/12 lg:h-full mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl lg:rounded-b-none">
+    <div className="bg-[#282828] overflow-y-scroll items-center h-[8vh] lg:w-4/12 lg:h-screen mx-5 w-11/12 rounded-3xl lg:rounded-t-3xl lg:rounded-b-none">
       <h1 className=" p-5 hidden lg:inline-flex text-white font-semibold py-4 text-4xl">
         Friends
       </h1>
