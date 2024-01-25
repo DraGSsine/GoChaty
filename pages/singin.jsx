@@ -47,7 +47,7 @@ const SingIn = () => {
   return (
     <>
       {!Loading ? (
-        <section className="bg-[#F4F7FF] py-20 lg:py-[48px]">
+        <section className="bg-[#F4F7FF] py-20 h-full lg:py-[48px]">
           {ErrorMessage && (
             <div
               id="alert-border-2"
