@@ -47,7 +47,7 @@ const SingIn = () => {
   return (
     <>
       {!Loading ? (
-        <section className="bg-[#F4F7FF] py-20 h-full lg:py-[48px]">
+        <section className="bg-[#F4F7FF] py-20 h-screen lg:py-[48px]">
           {ErrorMessage && (
             <div
               id="alert-border-2"
@@ -121,7 +121,7 @@ const SingIn = () => {
                     <div className="mb-10">
                       <input
                         type="submit"
-                        tValue="Sign In"
+                        value="Sign In"
                         className="bordder-primary w-full cursor-pointer rounded-md border bg-[#4235BB]  py-3 px-5 text-base text-white transition hover:bg-opacity-90"
                       />
                     </div>
